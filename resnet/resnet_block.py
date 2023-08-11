@@ -1,3 +1,5 @@
+# Author: Anushka Dhiman
+
 import tensorflow as tf
 
 def conv_bn_relu(x,f,k,s,padding,i_block):
@@ -7,8 +9,6 @@ def conv_bn_relu(x,f,k,s,padding,i_block):
     batch normalization 
     relu activation
     """
-
-    # print("x in conv_bn_relu: ",x,f,k,s,i_block)
 
     x = tf.keras.layers.Conv2D(f, kernel_size=(k,k), strides=(s,s),\
                 kernel_initializer=initializer, padding=padding)(x)
@@ -24,20 +24,17 @@ def identity_block(x, stage, idn_blocks_num, block_param):
 
         Input:
             x - input tensor of shape (m, height, width, channel)
-            num_filters - a list on integers, each of them defining the number of filters in each convolutional layer
             stage - integer, one of the 5 stages that our networks is conceptually divided into 
-                - stage names have the form: conv2_x, conv3_x ... conv5_x
-            block_param - dictionary 
+            idn_blocks_num - integer, no. of identity blocks in a stage
+            block_param - dictionary, contain keys 'f' - list of filters at each identity block at each stages,
+                            'k' - kernel size of identity blocks at each stages and 's' - stride size of identity blocks at each stages
             
         Output:
-            X - tensor (m, height, width, channel)
+            x - tensor (m, height, width, channel)
 
     """
 
     initializer = tf.keras.initializers.GlorotNormal()
-    # block = len(block_param['f'][stage-1])
-    # layers will be called conv{stage}_iden{block}_{convlayer_number_within_block}'
-    # conv_name = f'conv{stage}_{idn_blocks_num}' + '_{layer}_{type}'
 
     # Create skip connection
     x_skip = x
@@ -76,18 +73,15 @@ def residual_block(x, stage, conv_blocks_num, block_param):
         Input:
             x - input tensor of shape (m, height, width, channel)
             stage - integer, one of the 5 stages that our networks is conceptually divided into 
-                - stage names have the form: conv2_x, conv3_x ... conv5_x
-            block_param - 
-                    a list on integers, each of them defining the number of filters in each convolutional layer
+            conv_blocks_num - integer, no. of convolution blocks in a stage
+            block_param - dictionary, contain keys 'f' - list of filters at each convolution block at each stages,
+                            'k' - kernel size of convolution blocks at each stages and 's' - stride size of convolution blocks at each stages
             
         Output:
-            X - tensor (m, height, width, channel)
+            x - tensor (m, height, width, channel)
+
 
     """
-
-    # layers will be called conv{stage}_iden{block}_{convlayer_number_within_block}'
-    # conv_name = f'conv{stage}_{conv_blocks_num}' + '_{layer}_{type}'
-    # block = len(block_param['f'][stage-1])
 
     # Create skip connection
     x_skip = x
