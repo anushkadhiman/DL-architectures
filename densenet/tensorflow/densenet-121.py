@@ -1,3 +1,5 @@
+# Author - Anushka Dhiman
+
 import tensorflow as tf
 from densenet_block import dense_block,bn_rl_conv, transition_layer
 
@@ -6,14 +8,12 @@ def DenseNet121(input_shape,num_classes,filters=32):
         Build the DenseNet121 model 
 
         Input:
-            x - input tensor of shape (m, height, width, channel)
-            stage - integer, one of the 5 stages that our networks is conceptually divided into 
-                - stage names have the form: conv2_x, conv3_x ... conv5_x
-            conv_identity_blocks - dictionary contains keys conv_block which is the list of no. of conv blocks 
-                and identity_blocks which is the list of no. of identity blocks
+            input_shape - tuple, shape of input tensor (height, width, channel)
+            num_classes - integers, no. of classes 
+            filters - no. of filter in convolution blocks
             
         Output:
-            X - tensor (m, height, width, channel)
+            model - a Keras Model() instance
 
     """
 
