@@ -1,18 +1,23 @@
+# Author: Anushka Dhiman 
+
 import tensorflow as tf
 
 from resnet_block import conv_bn_relu, residual_block, identity_block
 
-def ResNet50(input_shape,num_classes, conv_identity_blocks, conv_block_params, identity_block_params):
+def ResNet50(input_shape, num_classes, conv_identity_blocks, conv_block_params, identity_block_params):
     """
         Build the ResNet50 model 
 
         Input:
-            x - input tensor of shape (m, height, width, channel)
-            stage - integer, one of the 5 stages that our networks is conceptually divided into 
-                - stage names have the form: conv2_x, conv3_x ... conv5_x
-            conv_identity_blocks - dictionary contains keys conv_block which is the list of no. of conv blocks 
+            input_shape - tuple, shape of input tensor (height, width, channel)
+            num_classes - integers, no. of classes 
+            conv_identity_blocks - dictionary, contain keys conv_block which is the list of no. of conv blocks 
                 and identity_blocks which is the list of no. of identity blocks
-            
+            conv_block_params - dictionary, contain keys 'f' - list of filters at each convolution block at each stages,
+                            'k' - kernel size of convolution blocks at each stages and 's' - stride size of convolution blocks at each stages
+            identity_block_params - dictionary, contain keys 'f' - list of filters at each identity block at each stages,
+                            'k' - kernel size of identity blocks at each stages and 's' - stride size of identity blocks at each stages
+                            
         Output:
             X - tensor (m, height, width, channel)
 
@@ -48,9 +53,9 @@ def ResNet50(input_shape,num_classes, conv_identity_blocks, conv_block_params, i
         # print("idn_blocks_num: ",idn_blocks_num)
         x = identity_block(x, i, idn_blocks_num, identity_block_params)
         # print(x)    
-           
+          
 
-    # Pooling layers
+    # Average Pooling layers
     x = tf.keras.layers.AveragePooling2D(pool_size=(2, 2), padding='same')(x)
 
     # Output layer
@@ -71,7 +76,6 @@ conv_identity_blocks = {'conv_blocks' : [1,1,1,1], 'identity_blocks' : [2,3,5,2]
 conv_block_params = {'f': [[64, 64, 256],[128, 128, 512],[256, 256, 1024],[512, 512, 2048]], 'k': [1,3,1,1], 's': [1,2,2,2]}
 identity_block_params = {'f': [[64, 64, 256],[128, 128, 512],[256, 256, 1024],[512, 512, 2048]], 'k': [1,3,1,1], 's': [1,2,2,2]}
 initializer = tf.keras.initializers.GlorotNormal()
-
 
 resnet50_model = ResNet50(input_shape,num_classes, conv_identity_blocks, conv_block_params,identity_block_params)
 
