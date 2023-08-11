@@ -19,7 +19,7 @@ def ResNet50(input_shape, num_classes, conv_identity_blocks, conv_block_params, 
                             'k' - kernel size of identity blocks at each stages and 's' - stride size of identity blocks at each stages
                             
         Output:
-            X - tensor (m, height, width, channel)
+            model - a Keras Model() instance
 
     """
 
@@ -65,6 +65,7 @@ def ResNet50(input_shape, num_classes, conv_identity_blocks, conv_block_params, 
 
     #Model
     model = tf.keras.models.Model(inputs = x_input, outputs = output)
+    
     # Return the result
     return model
 
